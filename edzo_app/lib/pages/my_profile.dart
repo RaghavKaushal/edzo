@@ -1,14 +1,25 @@
+import 'package:edzo_app/pages/user_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './user_wogym.dart';
 import '../provider/users.dart';
 
-class MyProfile extends StatelessWidget {
+class MyProfile extends StatefulWidget {
   final String id;
   MyProfile({this.id});
+
+  @override
+  _MyProfileState createState() => _MyProfileState(id);
+}
+
+class _MyProfileState extends State<MyProfile> {
+  final String id;
+  _MyProfileState(this.id);
   @override
   Widget build(BuildContext context) {
+    // final userID = ModalRoute.of(context).settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,8 +49,8 @@ class MyProfile extends StatelessWidget {
             Card(
               child: ListTile(
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, '/userinfo',
-                      arguments: id);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserInfo(id)));
                 },
                 leading: Icon(
                   Icons.supervised_user_circle,

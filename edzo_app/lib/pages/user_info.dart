@@ -7,17 +7,21 @@ import '../models/user.dart';
 import '../provider/Users.dart';
 
 class UserInfo extends StatefulWidget {
+  final id;
+  UserInfo(this.id);
   @override
-  _UserInfoState createState() => _UserInfoState();
+  _UserInfoState createState() => _UserInfoState(id);
 }
 
 class _UserInfoState extends State<UserInfo> {
+  final id;
+  _UserInfoState(this.id);
   var _savedUser = User(
       id: null,
       age: null,
       //sex: '',
       contact: null,
-      name: '',
+      username: '', //name previously
       chest: null,
       email: '',
       forearm: null,
@@ -84,7 +88,7 @@ class _UserInfoState extends State<UserInfo> {
 
   var _isInit = true;
   var _initValues = {
-    'name': '',
+    'username': '',
     'email': '',
     'age': '',
     //'sex': '',
@@ -106,7 +110,7 @@ class _UserInfoState extends State<UserInfo> {
             Provider.of<Users>(context, listen: false).findById(userID);
 
         _initValues = {
-          'name': _savedUser.name,
+          'username': _savedUser.username,
           'email': _savedUser.email,
           'age': _savedUser.age.toString(),
           //'sex': _savedUser.sex,
@@ -186,7 +190,7 @@ class _UserInfoState extends State<UserInfo> {
             child: ListView(
               children: <Widget>[
                 TextFormField(
-                  initialValue: _initValues['name'],
+                  initialValue: _initValues['username'],
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       labelText: 'Name', icon: Icon(Icons.people)),
@@ -195,7 +199,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: val,
+                        username: val,
                         age: _savedUser.age,
                         //sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -249,7 +253,7 @@ class _UserInfoState extends State<UserInfo> {
                     },
                     onSaved: (val) {
                       _savedUser = User(
-                          name: _savedUser.name,
+                          username: _savedUser.username,
                           age: _savedUser.age,
                           // sex: _savedUser.sex,
                           chest: _savedUser.chest,
@@ -276,7 +280,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         // sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -314,7 +318,7 @@ class _UserInfoState extends State<UserInfo> {
                     },
                     onSaved: (val) {
                       _savedUser = User(
-                          name: _savedUser.name,
+                          username: _savedUser.username,
                           age: int.parse(val),
                           // sex: _savedUser.sex,
                           chest: _savedUser.chest,
@@ -370,7 +374,7 @@ class _UserInfoState extends State<UserInfo> {
                   keyboardType: TextInputType.number,
                   onSaved: (val) {
                     _savedUser = User(
-                      name: _savedUser.name,
+                      username: _savedUser.username,
                       age: _savedUser.age,
                       // sex: _savedUser.sex,
                       chest: _savedUser.chest,
@@ -415,7 +419,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         //   sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -449,7 +453,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         // sex: _savedUser.sex,
                         chest: double.parse(val),
@@ -481,7 +485,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         //  sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -515,7 +519,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         // sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -549,7 +553,7 @@ class _UserInfoState extends State<UserInfo> {
                   },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         //  sex: _savedUser.sex,
                         chest: _savedUser.chest,
@@ -583,7 +587,7 @@ class _UserInfoState extends State<UserInfo> {
                   // },
                   onSaved: (val) {
                     _savedUser = User(
-                        name: _savedUser.name,
+                        username: _savedUser.username,
                         age: _savedUser.age,
                         //  sex: _savedUser.sex,
                         chest: _savedUser.chest,

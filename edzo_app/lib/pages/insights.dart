@@ -4,8 +4,7 @@ import 'package:edzo_app/pages/user_wogym.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/calories_bar.dart';
-import '../provider/Users.dart';
-import '../models/user.dart';
+import '../provider/users.dart';
 
 class InsightsPage extends StatelessWidget {
   final String id;
@@ -419,9 +418,9 @@ class InsightsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Users>(context);
-    final userid = userData.userlist;
-    print(userid);
+    final userData = Provider.of<Users>(context).userlist;
+    final userId = userData[int.parse(id)];
+    print(userId);
     // print(json.decode(userData.toString()));
     // final userL = userData.
     return Scaffold(

@@ -6,50 +6,51 @@ import 'package:http/http.dart' as http;
 
 class Users with ChangeNotifier {
   List<User> _userslist = [
-    User(
-        age: 20,
-        chest: 20,
-        contact: 9560160352,
-        email: 'raghavakaushal@gmail.com',
-        forearm: 20,
-        height: 181,
-        hip: 21,
-        name: 'raghav',
-        shoulder: 20,
-        waist: 20,
-        weight: 82,
-        id: '1'),
-    User(
-        age: 20,
-        chest: 20,
-        contact: 9560160352,
-        email: 'raghavakaushalfam@gmail.com',
-        forearm: 20,
-        height: 181,
-        hip: 21,
-        name: 'raghav',
-        shoulder: 20,
-        waist: 20,
-        weight: 82,
-        id: '2'),
-    User(
-        age: 20,
-        chest: 20,
-        contact: 9560160352,
-        email: 'raghavakaushalfam@gmail.com',
-        forearm: 20,
-        height: 181,
-        hip: 21,
-        name: 'raghafdsdv',
-        shoulder: 20,
-        waist: 20,
-        weight: 82,
-        id: '3')
+    // User(
+    //     age: 20,
+    //     chest: 20,
+    //     contact: 9560160352,
+    //     email: 'raghavakaushal@gmail.com',
+    //     forearm: 20,
+    //     height: 181,
+    //     hip: 21,
+    //     name: 'raghav',
+    //     shoulder: 20,
+    //     waist: 20,
+    //     weight: 82,
+    //     id: '1'),
+    // User(
+    //     age: 20,
+    //     chest: 20,
+    //     contact: 9560160352,
+    //     email: 'raghavakaushalfam@gmail.com',
+    //     forearm: 20,
+    //     height: 181,
+    //     hip: 21,
+    //     name: 'raghav',
+    //     shoulder: 20,
+    //     waist: 20,
+    //     weight: 82,
+    //     id: '2'),
+    // User(
+    //     age: 20,
+    //     chest: 20,
+    //     contact: 9560160352,
+    //     email: 'raghavakaushalfam@gmail.com',
+    //     forearm: 20,
+    //     height: 181,
+    //     hip: 21,
+    //     name: 'raghafdsdv',
+    //     shoulder: 20,
+    //     waist: 20,
+    //     weight: 82,
+    //     id: '3')
   ];
 
   final String authToken;
+  final String userId;
 
-  Users(this.authToken, this._userslist);
+  Users(this.authToken, this.userId, this._userslist);
 
   List<User> get userlist {
     return [..._userslist];
@@ -62,7 +63,7 @@ class Users with ChangeNotifier {
           'https://emailingdemo-a6ca1.firebaseio.com/user/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
-            'name': newUser.name,
+            'username': newUser.username,
             'age': newUser.age,
             'email': newUser.email,
             'contact': newUser.contact,
@@ -79,7 +80,7 @@ class Users with ChangeNotifier {
     return _userslist.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> fetchandssetuser() async {
+  Future<void> fetchandsetuser() async {
     final url =
         'https://emailingdemo-a6ca1.firebaseio.com/user.json?auth=$authToken';
     try {
@@ -90,6 +91,7 @@ class Users with ChangeNotifier {
       extractedData.forEach((userID, userData) {
         loadedUser.add(User(
             id: userID,
+            username: userData['name'],
             age: userData['age'],
             contact: userData['contact'],
             email: userData['email'],
@@ -110,16 +112,17 @@ class Users with ChangeNotifier {
       final response = await http.post(
         url,
         body: json.encode({
-          'name': user.name,
+          'username': user.username,
           'age': user.age,
           'contact': user.contact,
           'email': user.email,
           'weight': user.weight,
-          'height': user.height
+          'height': user.height,
+          'createrId': userId,
         }),
       );
       final newUser = User(
-          name: user.name,
+          username: user.username,
           age: user.age,
           contact: user.contact,
           email: user.email,
@@ -132,6 +135,7 @@ class Users with ChangeNotifier {
           waist: user.waist,
           isauth: true,
           id: json.decode(response.body)['name']);
+      print(json.decode(response.body));
       _userslist.add(newUser);
       notifyListeners();
     } catch (error) {

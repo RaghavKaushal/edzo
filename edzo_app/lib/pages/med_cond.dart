@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-import 'package:scoped_model/scoped_model.dart';
-
 class MedicalCondition extends StatefulWidget {
   @override
   _MedicalConditionState createState() => _MedicalConditionState();

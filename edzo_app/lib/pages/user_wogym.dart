@@ -1,9 +1,14 @@
+import './my_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:edzo_app/provider/users.dart';
+import '../provider/auth.dart';
 import './food_screen.dart';
 import './exercise_screen.dart';
+import '../provider/users.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class UserwoGym extends StatefulWidget {
@@ -14,6 +19,7 @@ class UserwoGym extends StatefulWidget {
 class _UserwoGymState extends State<UserwoGym>
     with SingleTickerProviderStateMixin {
   //SingeTickerProvider is used to have TabController
+  String id;
   double _value = 0.0;
   double _starval = 0.0;
   double rating = 0;
@@ -87,6 +93,7 @@ class _UserwoGymState extends State<UserwoGym>
 
   Widget _buildSideDrawerWithGym(BuildContext context) {
     //ADDED FLEX JUST IN CASE IT OVERFLOWS
+    // final userId = Provider.of<Users>(context).userId;
     return Drawer(
         child: SingleChildScrollView(
             child: Flex(
@@ -222,79 +229,90 @@ class _UserwoGymState extends State<UserwoGym>
 
   //SIDE DRAWER FOR USER WITH NO GYM
   Widget _buildSideDrawerNoGym(BuildContext context) {
+    // final userId = Provider.of<Users>(context).userId;
     return Drawer(
-        child: SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            color: Colors.transparent,
-            child: Container(
-              // height: 200,
-              // width: 200,
-              child: Image(
-                //height: 200,
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/edzo_user.png'),
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [const Color(0xFF915FB5), const Color(0xFFCA436B)],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    stops: [0.0, 1.0],
-                    tileMode: TileMode.clamp),
-                //image: _buildImage()
+        child: Consumer<Users>(
+      builder: (context, userData, _) => SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.transparent,
+              child: Container(
+                // height: 200,
+                // width: 200,
+                child: Image(
+                  //height: 200,
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/edzo_user.png'),
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF915FB5),
+                        const Color(0xFFCA436B)
+                      ],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                  //image: _buildImage()
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          ListTile(
-            selected: true,
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          ListTile(
-              selected: false,
-              leading: Icon(Icons.verified_user),
-              title: Text('My Profile'),
+            SizedBox(
+              height: 20.0,
+            ),
+            ListTile(
+              selected: true,
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            ListTile(
+                selected: false,
+                leading: Icon(Icons.verified_user),
+                title: Text('My Profile'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => MyProfile(id: userData.userlist.,)));
+                }),
+            ListTile(
+              leading: Icon(Icons.calendar_view_day),
+              title: Text('Summary'),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/profile');
-              }),
-          ListTile(
-            leading: Icon(Icons.calendar_view_day),
-            title: Text('Summary'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/summary');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.youtube_searched_for),
-            title: Text('Join Gym'),
-          ),
-          // ListTile(
-          //   onTap: () {
-          //     Navigator.pushReplacementNamed(context, '/reminders');
-          //   },
-          //   leading: IconButton(
-          //     icon: Icon(Icons.watch_later),
-          //     onPressed: () {},
-          //   ),
-          //   title: Text('Reminders'),
-          // ),
-          ListTile(
-            leading: Icon(Icons.help),
-            title: Text('Help'),
-          ),
-          ListTile(
-            leading: IconButton(
-              icon: Icon(Icons.supervised_user_circle),
-              onPressed: () {},
+                Navigator.pushReplacementNamed(context, '/summary');
+              },
             ),
-            title: Text('Logout'),
-          ),
-        ],
+            ListTile(
+              leading: Icon(Icons.youtube_searched_for),
+              title: Text('Join Gym'),
+            ),
+            // ListTile(
+            //   onTap: () {
+            //     Navigator.pushReplacementNamed(context, '/reminders');
+            //   },
+            //   leading: IconButton(
+            //     icon: Icon(Icons.watch_later),
+            //     onPressed: () {},
+            //   ),
+            //   title: Text('Reminders'),
+            // ),
+            ListTile(
+              leading: Icon(Icons.help),
+              title: Text('Help'),
+            ),
+            ListTile(
+              leading: Icon(
+                (Icons.exit_to_app),
+              ),
+              title: Text('Logout'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacementNamed('/');
+                Provider.of<Auth>(context, listen: false).logout();
+              },
+            ),
+          ],
+        ),
       ),
     ));
   }

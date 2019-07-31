@@ -1,8 +1,9 @@
 import 'package:edzo_app/models/user.dart';
 import 'package:edzo_app/pages/auth-screen.dart';
 import 'package:edzo_app/pages/intro_screen.dart';
+import 'package:edzo_app/pages/search.dart';
 import 'package:edzo_app/pages/user_wogym.dart';
-
+import './pages/splash-screen.dart';
 import 'package:edzo_app/provider/Users.dart';
 import 'package:edzo_app/provider/auth.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
             value: Auth(),
           ),
           ChangeNotifierProxyProvider<Auth, Users>(
-              builder: (ctx, auth, previousUser) => Users(auth.token,
+              builder: (ctx, auth, previousUser) => Users(
+                  auth.token,
+                  auth.userId,
                   previousUser == null ? [] : previousUser.userlist)),
           ChangeNotifierProvider(
             builder: (ctx) => User(),
@@ -59,7 +62,17 @@ class MyApp extends StatelessWidget {
                 // is not restarted.
                 primarySwatch: Colors.pink,
               ),
-              home: auth.isAuth ? UserwoGym() : AuthScreen(),
+              home: //Search(),
+                  auth.isAuth
+                      ? UserwoGym()
+                      : FutureBuilder(
+                          future: auth.tryAutoLogin(),
+                          builder: (ctx, authResultSnapshot) =>
+                              authResultSnapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? SplashScreen()
+                                  : AuthScreen(),
+                        ),
               routes: {
                 // '/': (BuildContext context) => IntroScreenPage(),
                 '/profile': (BuildContext context) => MyProfile(),
@@ -67,7 +80,7 @@ class MyApp extends StatelessWidget {
                 '/summary': (BuildContext context) => SummaryPage(),
                 '/medcond': (BuildContext context) => MedicalCondition(),
                 '/reminders': (BuildContext context) => RemindersPage(),
-                '/userinfo': (BuildContext context) => UserInfo(),
+                '/userinfo': (BuildContext context) => UserInfo(auth.userId),
                 '/insights': (BuildContext context) => InsightsPage(),
                 '/gymoffer': (BuildContext context) => GymOfferPage(),
                 '/goal': (BuildContext context) => GoalPage(),

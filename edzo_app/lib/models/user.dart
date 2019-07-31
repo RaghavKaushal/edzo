@@ -4,8 +4,8 @@
 import 'package:flutter/widgets.dart';
 
 class User with ChangeNotifier {
-  final String id;
-  final String name;
+  String id = DateTime.now().toIso8601String();
+  final String username;
   final int age;
   final String sex;
   final double weight;
@@ -22,7 +22,7 @@ class User with ChangeNotifier {
 
   User(
       {this.id,
-      this.name,
+      this.username,
       this.age,
       this.sex,
       this.isallotedgym,
