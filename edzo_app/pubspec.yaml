@@ -31,6 +31,12 @@ dependencies:
   provider: ^3.0.0+1
   http: 
   shared_preferences: ^0.5.3+4
+  path_provider: ^1.2.0
+  barcode_scan: ^1.0.0
+  qr_flutter: ^2.1.0+55
+  cloud_firestore: ^0.12.9
+  firebase_database: ^3.0.5
+  image_picker: ^0.6.1+2
 
 
 
@@ -53,7 +59,29 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/edzo_user.png
+     - assets/images/bottle.png
+     - assets/images/bottle1L.png
+     - assets/images/glass.png
+     - assets/images/large_mud.png
+     - assets/images/Large_mug.png
+     - assets/images/pint.png
+     - assets/images/pitcher.png
+     - assets/images/small_mug.png
+     - assets/images/tumbler.png
+     - assets/images/exercise.png
+     - assets/images/water.png
+     - assets/images/waterneed.png
+     - assets/images/bmi.png
+     - assets/images/bmr.png
+     - assets/images/bodyfat.png
+     - assets/images/calories.png
+     - assets/images/weight.png
+     
 
+
+
+
+     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

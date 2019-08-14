@@ -32,7 +32,12 @@ class _GoalPageState extends State<GoalPage> {
               margin: EdgeInsets.all(5.0),
               height: 250,
               width: 500,
-              color: Colors.red,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/exercise.png'),
+                ),
+              ),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -94,7 +99,12 @@ class _GoalPageState extends State<GoalPage> {
               ),
             ),
             Container(
-              color: Colors.deepOrange,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/water.png'),
+                ),
+              ),
               alignment: Alignment.topLeft,
               height: 250,
               width: 500,

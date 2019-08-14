@@ -1,3 +1,5 @@
+import 'package:edzo_app/pages/firestore.dart';
+import 'package:edzo_app/services/exercise.dart';
 import 'package:flutter/material.dart';
 
 class FoodScreen extends StatefulWidget {
@@ -9,6 +11,7 @@ class _FoodScreenState extends State<FoodScreen> {
   double _bodyHeight = 0.0;
   @override
   Widget build(BuildContext context) {
+    // print();
     return new Scaffold(
       backgroundColor: Colors.white,
       body: new SingleChildScrollView(
@@ -21,13 +24,26 @@ class _FoodScreenState extends State<FoodScreen> {
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
-                      'BreakFast',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Search(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.black38,
+                        child: Text(
+                          'BreakFast',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.ltr,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                      textDirection: TextDirection.ltr,
                     ),
                     new IconButton(
                       icon: new Icon(Icons.keyboard_arrow_down),

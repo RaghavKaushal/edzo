@@ -1,50 +1,49 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import '../models/user.dart';
+import '../provider/user.dart';
 import 'package:http/http.dart' as http;
 
 class Users with ChangeNotifier {
   List<User> _userslist = [
-    // User(
-    //     age: 20,
-    //     chest: 20,
-    //     contact: 9560160352,
-    //     email: 'raghavakaushal@gmail.com',
-    //     forearm: 20,
-    //     height: 181,
-    //     hip: 21,
-    //     name: 'raghav',
-    //     shoulder: 20,
-    //     waist: 20,
-    //     weight: 82,
-    //     id: '1'),
-    // User(
-    //     age: 20,
-    //     chest: 20,
-    //     contact: 9560160352,
-    //     email: 'raghavakaushalfam@gmail.com',
-    //     forearm: 20,
-    //     height: 181,
-    //     hip: 21,
-    //     name: 'raghav',
-    //     shoulder: 20,
-    //     waist: 20,
-    //     weight: 82,
-    //     id: '2'),
-    // User(
-    //     age: 20,
-    //     chest: 20,
-    //     contact: 9560160352,
-    //     email: 'raghavakaushalfam@gmail.com',
-    //     forearm: 20,
-    //     height: 181,
-    //     hip: 21,
-    //     name: 'raghafdsdv',
-    //     shoulder: 20,
-    //     waist: 20,
-    //     weight: 82,
-    //     id: '3')
+    User(
+        age: 20,
+        chest: 20,
+        contact: 9560160352,
+        email: 'raghavakaushal@gmail.com',
+        forearm: 20,
+        height: 181,
+        hip: 21,
+        username: 'raghav',
+        shoulder: 20,
+        waist: 20,
+        weight: 82,
+        id: '1'),
+    User(
+        age: 20,
+        chest: 20,
+        contact: 9560160352,
+        email: 'raghavakaushalfam@gmail.com',
+        forearm: 20,
+        height: 181,
+        hip: 21,
+        username: 'raghav',
+        shoulder: 20,
+        waist: 20,
+        weight: 82,
+        id: '2'),
+    User(
+        age: 20,
+        chest: 20,
+        contact: 9560160352,
+        email: 'raghavakaushalfam@gmail.com',
+        forearm: 20,
+        height: 181,
+        hip: 21,
+        username: 'raghafdsdv',
+        shoulder: 20,
+        waist: 20,
+        weight: 82,
+        id: '3')
   ];
 
   final String authToken;
@@ -73,11 +72,13 @@ class Users with ChangeNotifier {
           }));
       _userslist[userIndex] = newUser;
       notifyListeners();
+    } else {
+      print('...');
     }
   }
 
   User findById(String id) {
-    return _userslist.firstWhere((prod) => prod.id == id);
+    return _userslist.firstWhere((user) => user.id == id);
   }
 
   Future<void> fetchandsetuser() async {
@@ -89,14 +90,17 @@ class Users with ChangeNotifier {
       final List<User> loadedUser = [];
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       extractedData.forEach((userID, userData) {
-        loadedUser.add(User(
+        loadedUser.add(
+          User(
             id: userID,
             username: userData['name'],
             age: userData['age'],
             contact: userData['contact'],
             email: userData['email'],
             weight: userData['weight'],
-            height: userData['height']));
+            height: userData['height'],
+          ),
+        );
       });
       _userslist = loadedUser;
       notifyListeners();
@@ -134,8 +138,8 @@ class Users with ChangeNotifier {
           shoulder: user.shoulder,
           waist: user.waist,
           isauth: true,
-          id: json.decode(response.body)['name']);
-      print(json.decode(response.body));
+          id: DateTime.now().toIso8601String());
+      print(json.decode(response.body)['name']);
       _userslist.add(newUser);
       notifyListeners();
     } catch (error) {

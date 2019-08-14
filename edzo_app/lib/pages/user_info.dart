@@ -1,25 +1,20 @@
-import 'dart:convert';
 import 'package:edzo_app/pages/insights.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/user.dart';
+import '../provider/user.dart';
 import '../provider/Users.dart';
 
 class UserInfo extends StatefulWidget {
-  final id;
-  UserInfo(this.id);
   @override
-  _UserInfoState createState() => _UserInfoState(id);
+  _UserInfoState createState() => _UserInfoState();
 }
 
 class _UserInfoState extends State<UserInfo> {
-  final id;
-  _UserInfoState(this.id);
   var _savedUser = User(
       id: null,
       age: null,
-      //sex: '',
+      sex: '',
       contact: null,
       username: '', //name previously
       chest: null,
@@ -37,7 +32,7 @@ class _UserInfoState extends State<UserInfo> {
 
   final _ageFN = FocusNode();
 
-  //final _sexFN = FocusNode();
+  final _sexFN = FocusNode();
 
   final _weightFN = FocusNode();
 
@@ -61,7 +56,7 @@ class _UserInfoState extends State<UserInfo> {
     _emailFN.dispose();
     _contactFN.dispose();
     _ageFN.dispose();
-    //  _sexFN.dispose();
+    _sexFN.dispose();
     _weightFN.dispose();
     _heightFN.dispose();
     _chestFN.dispose();
@@ -78,6 +73,7 @@ class _UserInfoState extends State<UserInfo> {
       context,
       MaterialPageRoute(
           builder: (context) => InsightsPage(
+                id: _savedUser.id,
                 height: _savedUser.height,
                 weight: _savedUser.weight,
                 age: _savedUser.age,
@@ -91,7 +87,7 @@ class _UserInfoState extends State<UserInfo> {
     'username': '',
     'email': '',
     'age': '',
-    //'sex': '',
+    'sex': '',
     'contact': '',
     'height': '',
     'weight': '',
@@ -105,6 +101,7 @@ class _UserInfoState extends State<UserInfo> {
   void didChangeDependencies() {
     if (_isInit) {
       final userID = ModalRoute.of(context).settings.arguments as String;
+      print(userID.toString() + ' userID');
       if (userID != null) {
         _savedUser =
             Provider.of<Users>(context, listen: false).findById(userID);
@@ -113,7 +110,7 @@ class _UserInfoState extends State<UserInfo> {
           'username': _savedUser.username,
           'email': _savedUser.email,
           'age': _savedUser.age.toString(),
-          //'sex': _savedUser.sex,
+          'sex': _savedUser.sex,
           'contact': _savedUser.contact.toString(),
           'height': _savedUser.height.toString(),
           'weight': _savedUser.weight.toString(),

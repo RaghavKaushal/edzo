@@ -5,9 +5,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:edzo_app/provider/users.dart';
+import '../services/exercise.dart';
 import '../provider/auth.dart';
 import './food_screen.dart';
 import './exercise_screen.dart';
+import '../provider/user.dart';
 import '../provider/users.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
@@ -19,10 +21,11 @@ class UserwoGym extends StatefulWidget {
 class _UserwoGymState extends State<UserwoGym>
     with SingleTickerProviderStateMixin {
   //SingeTickerProvider is used to have TabController
-  String id;
   double _value = 0.0;
   double _starval = 0.0;
   double rating = 0;
+  bool isAlotted = false;
+  bool isScanned = false;
   onChanged(double value, {double starval}) {
     setState(() {
       _value = value;
@@ -95,124 +98,126 @@ class _UserwoGymState extends State<UserwoGym>
     //ADDED FLEX JUST IN CASE IT OVERFLOWS
     // final userId = Provider.of<Users>(context).userId;
     return Drawer(
-        child: SingleChildScrollView(
-            child: Flex(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Column(
+      child: SingleChildScrollView(
+        child: Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {},
+            Column(
+              children: <Widget>[
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          onPressed: () {},
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        alignment: Alignment.bottomLeft,
+                        //  color: Colors.black,// you cannot provide both decorartion and decoration
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                          image: _buildImage(),
+                        ),
+                        child: Text(
+                          'MR. Raghav Kaushal',
+                          style: TextStyle(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                AppBar(
+                  automaticallyImplyLeading: false,
+                  leading: ListTile(
+                    title: Icon(Icons.label_important),
+                    subtitle: Text(
+                      'Notice',
+                      textAlign: TextAlign.left,
                     ),
                   ),
-                  Container(
-                    height: 100,
-                    alignment: Alignment.bottomLeft,
-                    //  color: Colors.black,// you cannot provide both decorartion and decoration
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      image: _buildImage(),
+                  title: ListTile(
+                    title: Icon(
+                      Icons.mail_outline,
                     ),
-                    child: Text(
-                      'MR. Raghav Kaushal',
-                      style: TextStyle(),
+                    subtitle: Text(
+                      'Chat',
+                      textAlign: TextAlign.center,
                     ),
+                    // trailing: ListTile(
+                    //   title: Icon(Icons.watch),
+                    //   subtitle: Text('Recent'),
+                    // ),
                   ),
-                ],
-              ),
-            ),
-            AppBar(
-              automaticallyImplyLeading: false,
-              leading: ListTile(
-                title: Icon(Icons.label_important),
-                subtitle: Text(
-                  'Notice',
-                  textAlign: TextAlign.left,
                 ),
-              ),
-              title: ListTile(
-                title: Icon(
-                  Icons.mail_outline,
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text('Home'),
                 ),
-                subtitle: Text(
-                  'Chat',
-                  textAlign: TextAlign.center,
+                ListTile(
+                  leading: Icon(Icons.verified_user),
+                  title: Text('My Profile'),
                 ),
-                // trailing: ListTile(
-                //   title: Icon(Icons.watch),
-                //   subtitle: Text('Recent'),
-                // ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            ListTile(
-              leading: Icon(Icons.verified_user),
-              title: Text('My Profile'),
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_view_day),
-              title: Text('Summary'),
-            ),
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text('Request a Plan'),
-            ),
-            ListTile(
-              onTap: () {
-                createAlertDialogue(context).then((onValue) {
-                  SnackBar mySnackbar = SnackBar(
-                    content: Text('Hello ${onValue}'),
-                  );
-                  Scaffold.of(context).showSnackBar(mySnackbar);
-                });
-              },
-              leading: IconButton(
-                icon: Icon(Icons.compare_arrows),
-                onPressed: () {},
-              ),
-              title: Text('Change Trainer'),
-            ),
-            ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text('Help'),
-            ),
-            ListTile(
-              leading: Icon(Icons.thumb_up),
-              title: Text('Leave Feedback'),
-            ),
-            ListTile(
-              leading: IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: () {},
-              ),
-              title: Text('Leave Gym'),
-            ),
-            ListTile(
-              leading: IconButton(
-                icon: Icon(Icons.time_to_leave),
-                onPressed: () {},
-              ),
-              title: Text('Log out'),
+                ListTile(
+                  leading: Icon(Icons.calendar_view_day),
+                  title: Text('Summary'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.dashboard),
+                  title: Text('Request a Plan'),
+                ),
+                ListTile(
+                  onTap: () {
+                    createAlertDialogue(context).then((onValue) {
+                      SnackBar mySnackbar = SnackBar(
+                        content: Text('Hello ${onValue}'),
+                      );
+                      Scaffold.of(context).showSnackBar(mySnackbar);
+                    });
+                  },
+                  leading: IconButton(
+                    icon: Icon(Icons.compare_arrows),
+                    onPressed: () {},
+                  ),
+                  title: Text('Change Trainer'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('Help'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.thumb_up),
+                  title: Text('Leave Feedback'),
+                ),
+                ListTile(
+                  leading: IconButton(
+                    icon: Icon(Icons.cancel),
+                    onPressed: () {},
+                  ),
+                  title: Text('Leave Gym'),
+                ),
+                ListTile(
+                  leading: IconButton(
+                    icon: Icon(Icons.time_to_leave),
+                    onPressed: () {},
+                  ),
+                  title: Text('Log out'),
+                ),
+              ],
             ),
           ],
+          direction: Axis.vertical,
         ),
-      ],
-      direction: Axis.vertical,
-    )));
+      ),
+    );
   }
 
   //SIDE DRAWER ENDS
@@ -229,10 +234,9 @@ class _UserwoGymState extends State<UserwoGym>
 
   //SIDE DRAWER FOR USER WITH NO GYM
   Widget _buildSideDrawerNoGym(BuildContext context) {
-    // final userId = Provider.of<Users>(context).userId;
+    var quantity;
     return Drawer(
-        child: Consumer<Users>(
-      builder: (context, userData, _) => SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
@@ -273,7 +277,7 @@ class _UserwoGymState extends State<UserwoGym>
                 title: Text('My Profile'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => MyProfile(id: userData.userlist.,)));
+                      MaterialPageRoute(builder: (ctx) => MyProfile()));
                 }),
             ListTile(
               leading: Icon(Icons.calendar_view_day),
@@ -314,7 +318,97 @@ class _UserwoGymState extends State<UserwoGym>
           ],
         ),
       ),
-    ));
+    );
+  }
+
+  //Water Container POPUP
+
+  waterContainerPopUp(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Container(
+                  height: 600,
+                  width: 300,
+                  child: Row(
+                    children: <Widget>[
+                      ListView(
+                        children: <Widget>[
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/bottle.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/bottle1L.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/glass.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/large_mud.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/Large_mug.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/pint.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/pitcher.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/small_mug.png'),
+                            ),
+                          ),
+                          Container(
+                            child: Image(
+                              //height: 200,
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/tumbler.png'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   //
@@ -322,11 +416,15 @@ class _UserwoGymState extends State<UserwoGym>
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: _buildSideDrawerNoGym(context),
+        // isAlotted
+        //     ? _buildSideDrawerNoGym(context)
+        //     : _buildSideDrawerWithGym(context),
         appBar: AppBar(
             //   leading: Icon(Icons.dehaze),
             ),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+            String quantity;
             return <Widget>[
               SliverAppBar(
                 automaticallyImplyLeading: false,
@@ -469,12 +567,126 @@ class _UserwoGymState extends State<UserwoGym>
                             SizedBox(
                               width: 30.0,
                             ),
-                            Text(
-                              'Glass',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                            GestureDetector(
+                              onTap: () async {
+                                Future<void> _result = await showDialog(
+                                    context: context,
+                                    builder: (_) => Container(
+                                          width: 100,
+                                          height: 200,
+                                          color: Color(0xFFFF3333),
+                                          child: ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: <Widget>[
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '2L';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/bottle.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '1L';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/bottle1L.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '125mL';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/glass.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '1L';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/large_mud.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '500mL';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/Large_mug.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '500mL';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/pint.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '1.5L';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/pitcher.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '250mL';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/small_mug.png'),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  quantity = '330mL';
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Image(
+                                                  image: AssetImage(
+                                                      'assets/images/tumbler.png'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ));
+                              },
+                              child: Container(
+                                  //decoration: BoxDecoration(),
+                                  color: Colors.green,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        'Glass',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text('quantity')
+                                    ],
+                                  )),
                             ),
                             SizedBox(
                               width: 30.0,

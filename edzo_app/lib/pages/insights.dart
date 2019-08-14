@@ -13,7 +13,6 @@ class InsightsPage extends StatelessWidget {
   final int age;
   final String sex;
   InsightsPage({this.id, this.height, this.weight, this.age, this.sex});
-  @override
   // double _value1;
   // double _value2;
   // double _value3;
@@ -21,43 +20,44 @@ class InsightsPage extends StatelessWidget {
   // double _value5;
   // double _value6;
   // onChanged(double value1, value2, value3, value4, value5, value6) {
-  //   // setState(() {
-  //   //   _value1 = value1;
-  //   //   _value2 = value2;
-  //   //   _value3 = value3;
-  //   //   _value4 = value4;
-  //   //   _value5 = value5;
-  //   //   _value6 = value6;
-  //   //   debugPrint(_value1.toString());
-  //   // });
+  // setState(() {
+  //   _value1 = value1;
+  //   _value2 = value2;
+  //   _value3 = value3;
+  //   _value4 = value4;
+  //   _value5 = value5;
+  //   _value6 = value6;
+  //   debugPrint(_value1.toString());
+  // });
   // }
 
 //BMI POPUP
 
   bmiPopUp(BuildContext context) {
+    bool isAvail = true;
     final double bmi = weight / (height * height);
+
+    if (weight == null || height == null) {
+      isAvail = false;
+    }
 
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Colors.amber,
+            backgroundColor: Color(0xFFFFAE19),
             contentPadding: EdgeInsets.all(0),
             children: <Widget>[
               SimpleDialogOption(
                 child: Container(
                   height: 400,
                   width: 600,
-                  color: Colors.amber,
+                  color: Color(0xFFFFAE19),
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.accessibility,
-                              size: 60,
-                            ),
                             Text(
                               'BMI',
                               style:
@@ -74,12 +74,15 @@ class InsightsPage extends StatelessWidget {
                                 TextStyle(color: Colors.white, fontSize: 20)),
                       ),
                       Container(
-                        child: Text(bmi.toString()),
+                        child: isAvail
+                            ? Text(bmi.toString())
+                            : Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Please fill up the info first'),
+                                ),
+                              ),
                       ),
-                      // ADD A CHART BAR
-                      Container(
-                          // child: CaloriesBar(currentcal, percentcal),
-                          ),
                     ],
                   ),
                 ),
@@ -119,10 +122,6 @@ class InsightsPage extends StatelessWidget {
                       Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.accessibility,
-                              size: 60,
-                            ),
                             Text(
                               'BMR',
                               style:
@@ -166,23 +165,19 @@ class InsightsPage extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Color(0xFF00FF2D),
+            backgroundColor: Color(0xFFFF8F57),
             contentPadding: EdgeInsets.all(0),
             children: <Widget>[
               SimpleDialogOption(
                 child: Container(
                   height: 300,
                   width: 600,
-                  color: Color(0xFF00FF2D),
+                  color: Color(0xFFFF8F57),
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.accessibility,
-                              size: 60,
-                            ),
                             Text(
                               'Ideal Weight',
                               style:
@@ -229,23 +224,19 @@ class InsightsPage extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Color(0xFFEA005F),
+            backgroundColor: Color(0xFF006861),
             contentPadding: EdgeInsets.all(0),
             children: <Widget>[
               SimpleDialogOption(
                 child: Container(
                   height: 300,
                   width: 600,
-                  color: Color(0xFFEA005F),
+                  color: Color(0xFF006861),
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.accessibility,
-                              size: 60,
-                            ),
                             Text(
                               'Water Requirement',
                               style:
@@ -293,14 +284,14 @@ class InsightsPage extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Color(0xFFEA005F),
+            backgroundColor: Color(0xFFFF3E20),
             contentPadding: EdgeInsets.all(0),
             children: <Widget>[
               SimpleDialogOption(
                 child: Container(
                   height: 300,
                   width: 600,
-                  color: Color(0xFFEA005F),
+                  color: Color(0xFFFF3E20),
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -352,30 +343,24 @@ class InsightsPage extends StatelessWidget {
 
   // Body Weight %
 
-  //Daily Calories
-
   bodyfatPopUp(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            backgroundColor: Color(0xFF00EA8B),
+            backgroundColor: Colors.grey,
             contentPadding: EdgeInsets.all(0),
             children: <Widget>[
               SimpleDialogOption(
                 child: Container(
                   height: 300,
                   width: 600,
-                  color: Color(0xFF00EA8B),
+                  color: Colors.grey,
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.accessibility,
-                              size: 60,
-                            ),
                             Text(
                               'Water Requirement',
                               style:
@@ -418,9 +403,6 @@ class InsightsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Users>(context).userlist;
-    final userId = userData[int.parse(id)];
-    print(userId);
     // print(json.decode(userData.toString()));
     // final userL = userData.
     return Scaffold(
@@ -452,15 +434,13 @@ class InsightsPage extends StatelessWidget {
                     margin: EdgeInsets.only(left: 25, top: 10),
                     height: 170,
                     width: 170,
-                    color: Colors.red,
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      'BMI',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/bmi.png'),
+                      ),
                     ),
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
                 GestureDetector(
@@ -474,13 +454,13 @@ class InsightsPage extends StatelessWidget {
                     ),
                     height: 170,
                     width: 170,
-                    color: Colors.blue,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/bmr.png'),
+                      ),
+                    ),
                     alignment: Alignment.bottomCenter,
-                    child: Text('BMR',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25)),
                   ),
                 ),
               ],
@@ -496,15 +476,13 @@ class InsightsPage extends StatelessWidget {
                     margin: EdgeInsets.only(left: 25, top: 10),
                     height: 170,
                     width: 170,
-                    color: Colors.deepOrange,
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      'Ideal Weight',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/weight.png'),
+                      ),
                     ),
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
                 GestureDetector(
@@ -515,13 +493,13 @@ class InsightsPage extends StatelessWidget {
                     margin: EdgeInsets.only(right: 25, top: 10),
                     height: 170,
                     width: 170,
-                    color: Colors.purple,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/waterneed.png'),
+                      ),
+                    ),
                     alignment: Alignment.bottomCenter,
-                    child: Text('Water Requirement',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25)),
                   ),
                 ),
               ],
@@ -537,15 +515,13 @@ class InsightsPage extends StatelessWidget {
                     margin: EdgeInsets.only(left: 25, top: 10),
                     height: 170,
                     width: 170,
-                    color: Colors.yellow,
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      'Daily Calories',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/calories.png'),
+                      ),
                     ),
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
                 GestureDetector(
@@ -556,13 +532,13 @@ class InsightsPage extends StatelessWidget {
                     margin: EdgeInsets.only(right: 25, top: 10),
                     height: 170,
                     width: 170,
-                    color: Colors.cyan,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/bodyfat.png'),
+                      ),
+                    ),
                     alignment: Alignment.bottomCenter,
-                    child: Text('Body fat %',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25)),
                   ),
                 ),
               ],
