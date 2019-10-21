@@ -1,17 +1,34 @@
-import 'package:edzo_app/pages/firestore.dart';
-import 'package:edzo_app/services/exercise.dart';
+import 'package:edzo_app/pages/foodSearch.dart';
+import 'package:edzo_app/pages/user_wogym.dart';
 import 'package:flutter/material.dart';
 
 class FoodScreen extends StatefulWidget {
+  final carbo;
+  final fat;
+  final kcal;
+  final protein;
+  FoodScreen({this.carbo, this.fat, this.kcal, this.protein});
   @override
   _FoodScreenState createState() => _FoodScreenState();
 }
 
 class _FoodScreenState extends State<FoodScreen> {
+  final carbo;
+  final fat;
+  final kcal;
+  final protein;
+  _FoodScreenState({this.carbo, this.fat, this.kcal, this.protein});
+  // double _bodyHeightBreakfast = 0.0;
+  // double _bodyHeightMidMorning = 0.0;
+  // double _bodyHeightlunch = 0.0;
+  // double _bodyHeightDinner = 0.0;
   double _bodyHeight = 0.0;
   @override
   Widget build(BuildContext context) {
-    // print();
+    // var totalcarbo = 0;
+    // var totalfat = 0;
+    // var totalkcal = 0;
+    // var totalprotein = 0;
     return new Scaffold(
       backgroundColor: Colors.white,
       body: new SingleChildScrollView(
@@ -25,16 +42,7 @@ class _FoodScreenState extends State<FoodScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => Search(),
-                          ),
-                        );
-                      },
                       child: Container(
-                        color: Colors.black38,
                         child: Text(
                           'BreakFast',
                           style: TextStyle(
@@ -52,7 +60,7 @@ class _FoodScreenState extends State<FoodScreen> {
                           this._bodyHeight = 50.0;
                         });
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -63,8 +71,17 @@ class _FoodScreenState extends State<FoodScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.add),
                     Text('Add food'),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SearchFood(),
+                          ),
+                        );
+                      },
+                    ),
                     new IconButton(
                       icon: new Icon(Icons.keyboard_arrow_up),
                       onPressed: () {
@@ -113,7 +130,16 @@ class _FoodScreenState extends State<FoodScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.add),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SearchFood(),
+                          ),
+                        );
+                      },
+                    ),
                     Text('Add food'),
                     new IconButton(
                       icon: new Icon(Icons.keyboard_arrow_up),
@@ -163,7 +189,16 @@ class _FoodScreenState extends State<FoodScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.add),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SearchFood(),
+                          ),
+                        );
+                      },
+                    ),
                     Text('Add food'),
                     new IconButton(
                       icon: new Icon(Icons.keyboard_arrow_up),
@@ -213,7 +248,19 @@ class _FoodScreenState extends State<FoodScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Icon(Icons.add),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        UserwoGym(
+                          proteinIntake: protein,
+                        );
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SearchFood(),
+                          ),
+                        );
+                      },
+                    ),
                     Text('Add food'),
                     new IconButton(
                       icon: new Icon(Icons.keyboard_arrow_up),

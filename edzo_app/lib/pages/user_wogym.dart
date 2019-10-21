@@ -1,31 +1,40 @@
+import 'package:edzo_app/widgets/gymSearch.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import './my_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:edzo_app/provider/users.dart';
-import '../services/exercise.dart';
+import '../widgets/calories_bar.dart';
 import '../provider/auth.dart';
 import './food_screen.dart';
 import './exercise_screen.dart';
-import '../provider/user.dart';
-import '../provider/users.dart';
+
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class UserwoGym extends StatefulWidget {
+  final proteinIntake;
+  UserwoGym({this.proteinIntake});
   @override
-  _UserwoGymState createState() => _UserwoGymState();
+  _UserwoGymState createState() => _UserwoGymState(
+        proteinIntake: proteinIntake,
+      );
 }
 
 class _UserwoGymState extends State<UserwoGym>
     with SingleTickerProviderStateMixin {
   //SingeTickerProvider is used to have TabController
+  final proteinIntake;
+  _UserwoGymState({this.proteinIntake});
   double _value = 0.0;
   double _starval = 0.0;
-  double rating = 0;
+  double rating = 10;
+  // var total = proteinBar / 2700;
+  // var totalBar = proteinBar;
   bool isAlotted = false;
   bool isScanned = false;
+  bool isProteinNull = true;
   onChanged(double value, {double starval}) {
     setState(() {
       _value = value;
@@ -287,6 +296,13 @@ class _UserwoGymState extends State<UserwoGym>
               },
             ),
             ListTile(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SearchGym(),
+                  ),
+                );
+              },
               leading: Icon(Icons.youtube_searched_for),
               title: Text('Join Gym'),
             ),
@@ -411,6 +427,13 @@ class _UserwoGymState extends State<UserwoGym>
         });
   }
 
+  double getProtein() {
+    if (proteinIntake == null) {
+      return 0;
+    }
+    return proteinIntake;
+  }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -440,15 +463,18 @@ class _UserwoGymState extends State<UserwoGym>
                         //     onChanged: onChanged,
                         //   ),
                         // ),
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          child: LinearProgressIndicator(
-                            value: _value,
-                            semanticsLabel: 'Target',
-                            semanticsValue: '2500/2700',
-                            backgroundColor: Colors.white,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.pinkAccent[200]),
+                        Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: new LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            lineHeight: 20.0,
+                            animationDuration: 2500,
+                            percent: getProtein(),
+                            //   percent: isProteinNull: 0 ? proteinIntake,
+
+                            linearStrokeCap: LinearStrokeCap.roundAll,
+                            progressColor: Colors.green,
                           ),
                         ),
                         SizedBox(
@@ -711,7 +737,7 @@ class _UserwoGymState extends State<UserwoGym>
                     ),
                   ),
                 ),
-                expandedHeight: MediaQuery.of(context).size.height * 0.5,
+                expandedHeight: MediaQuery.of(context).size.height * 0.3,
                 pinned: true,
                 floating: true,
                 forceElevated: boxIsScrolled,

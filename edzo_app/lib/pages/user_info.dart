@@ -72,13 +72,14 @@ class _UserInfoState extends State<UserInfo> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InsightsPage(
-                id: _savedUser.id,
-                height: _savedUser.height,
-                weight: _savedUser.weight,
-                age: _savedUser.age,
-                sex: _savedUser.sex,
-              )),
+        builder: (context) => InsightsPage(
+          id: _savedUser.id,
+          height: _savedUser.height,
+          weight: _savedUser.weight,
+          age: _savedUser.age,
+          sex: _savedUser.sex,
+        ),
+      ),
     );
   }
 

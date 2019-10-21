@@ -67,7 +67,9 @@ class _MyProfileState extends State<MyProfile> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => UserwoGym()),
+              MaterialPageRoute(
+                builder: (context) => UserwoGym(),
+              ),
             );
           },
         ),

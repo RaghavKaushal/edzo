@@ -109,6 +109,49 @@ class Users with ChangeNotifier {
     }
   }
 
+  Future<void> adduserDetails(User user) async {
+    final url =
+        'https://edzo-7ea7e.firebaseio.com/db4/users.json?auth=$authToken';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'username': user.username,
+            'age': user.age,
+            'contact': user.contact,
+            'email': user.email,
+            'height': user.height,
+            'weight': user.weight,
+            'sex': user.sex,
+          },
+        ),
+      );
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> addUserMerchant(User user) async {
+    final url =
+        'https://edzo-7ea7e.firebaseio.com/db4/users.json?auth=$authToken';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'id': user.id,
+          },
+        ),
+      );
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   Future<void> addUser(User user) async {
     final url =
         'https://emailingdemo-a6ca1.firebaseio.com/user.json?auth=$authToken';

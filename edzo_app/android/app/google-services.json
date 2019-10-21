@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "703238037577",
+    "firebase_url": "https://emailingdemo-a6ca1.firebaseio.com",
+    "project_id": "emailingdemo-a6ca1",
+    "storage_bucket": "emailingdemo-a6ca1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703238037577:android:dff2699b245c6af0",
+        "android_client_info": {
+          "package_name": "com.example.edzo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703238037577-oco0p1mnamnhb34pf8g6asgm8fc72hfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfBtnqppNyHRpZ89zP_kKxDhb5K7DCzlA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703238037577-oco0p1mnamnhb34pf8g6asgm8fc72hfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

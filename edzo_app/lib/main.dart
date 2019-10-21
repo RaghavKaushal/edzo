@@ -18,6 +18,7 @@ import './pages/summary.dart';
 import './pages/reminders.dart';
 import './pages/foodpref.dart';
 import 'package:provider/provider.dart';
+import './ui/login_page.dart';
 
 // import 'package:flutter/rendering.dart';
 
@@ -33,50 +34,50 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(
-            value: Auth(),
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, Users>(
+            builder: (ctx, auth, previousUser) => Users(auth.token, auth.userId,
+                previousUser == null ? [] : previousUser.userlist)),
+        ChangeNotifierProvider(
+          builder: (ctx) => User(),
+        )
+      ],
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Edzo',
+          theme: ThemeData(
+            primarySwatch: Colors.pink,
           ),
-          ChangeNotifierProxyProvider<Auth, Users>(
-              builder: (ctx, auth, previousUser) => Users(
-                  auth.token,
-                  auth.userId,
-                  previousUser == null ? [] : previousUser.userlist)),
-          ChangeNotifierProvider(
-            builder: (ctx) => User(),
-          )
-        ],
-        child: Consumer<Auth>(
-          builder: (ctx, auth, _) => MaterialApp(
-              title: 'Edzo',
-              theme: ThemeData(
-                primarySwatch: Colors.pink,
-              ),
-              home: //Search(),
-                  auth.isAuth
-                      ? UserwoGym()
-                      : FutureBuilder(
-                          future: auth.tryAutoLogin(),
-                          builder: (ctx, authResultSnapshot) =>
-                              authResultSnapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? SplashScreen()
-                                  : AuthScreen(),
-                        ),
-              routes: {
-                // '/': (BuildContext context) => IntroScreenPage(),
-                '/profile': (BuildContext context) => MyProfile(),
-                '/intropage': (BuildContext context) => UserwoGym(),
-                '/summary': (BuildContext context) => SummaryPage(),
-                '/medcond': (BuildContext context) => MedicalCondition(),
-                '/reminders': (BuildContext context) => RemindersPage(),
-                '/userinfo': (BuildContext context) => UserInfo(),
-                '/insights': (BuildContext context) => InsightsPage(),
-                '/gymoffer': (BuildContext context) => GymOfferPage(),
-                '/goal': (BuildContext context) => GoalPage(),
-                '/gymservices': (BuildContext context) => GymOfferPage(),
-                '/foodpref': (BuildContext context) => FoodPref(),
-              }),
-        ));
+          home: //Search(),
+              auth.isAuth
+                  ? UserwoGym()
+                  : FutureBuilder(
+                      future: auth.tryAutoLogin(),
+                      builder: (ctx, authResultSnapshot) =>
+                          authResultSnapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? SplashScreen()
+                              : AuthScreen(),
+                    ),
+          routes: {
+            // '/': (BuildContext context) => IntroScreenPage(),
+            '/profile': (BuildContext context) => MyProfile(),
+            '/intropage': (BuildContext context) => UserwoGym(),
+            '/summary': (BuildContext context) => SummaryPage(),
+            '/medcond': (BuildContext context) => MedicalCondition(),
+            '/reminders': (BuildContext context) => RemindersPage(),
+            '/userinfo': (BuildContext context) => UserInfo(),
+            '/insights': (BuildContext context) => InsightsPage(),
+            '/gymoffer': (BuildContext context) => GymOfferPage(),
+            '/goal': (BuildContext context) => GoalPage(),
+            '/gymservices': (BuildContext context) => GymOfferPage(),
+            '/foodpref': (BuildContext context) => FoodPref(),
+          },
+        ),
+      ),
+    );
   }
 }

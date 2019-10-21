@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'package:edzo_app/pages/my_profile.dart';
-import 'package:edzo_app/pages/user_wogym.dart';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../widgets/calories_bar.dart';
-import '../provider/users.dart';
 
 class InsightsPage extends StatelessWidget {
   final String id;
@@ -34,11 +30,11 @@ class InsightsPage extends StatelessWidget {
 //BMI POPUP
 
   bmiPopUp(BuildContext context) {
-    bool isAvail = true;
+    bool isAvail = false;
     final double bmi = weight / (height * height);
 
-    if (weight == null || height == null) {
-      isAvail = false;
+    if (weight != null || height != null) {
+      isAvail = true;
     }
 
     return showDialog(
@@ -95,16 +91,23 @@ class InsightsPage extends StatelessWidget {
 //bmr popup
   bmrPopUp(BuildContext context) {
     double bmrMale;
-    double bmrFemale;
-    double bmrformale(double w, double h, int a, String s) {
-      if (s == 'M' || s == 'm') {
-        bmrMale = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
-        return bmrMale;
-      } else if (s == 'F' || s == 'f') {
-        bmrFemale = 655 + (9.6 * weight) + (1.8 * height) - (4.7 * age);
-      }
+    // double bmrFemale;
+    // double bmrformale(double w, double h, int a, String s) {
+    //   if (s == 'M' || s == 'm') {
+    //     bmrMale = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+    //     return bmrMale;
+    //   } else if (s == 'F' || s == 'f') {
+    //     bmrFemale = 655 + (9.6 * weight) + (1.8 * height) - (4.7 * age);
+    //   }
+    // }
+    bmrMale = 66 + (13.7 * weight) + (5 * height) - (6.8 * age);
+    if (weight == null || height == null || age == null) {
+      return Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill your info first'),
+        ),
+      );
     }
-
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -136,18 +139,13 @@ class InsightsPage extends StatelessWidget {
                       Container(
                         // color: Colors.brown,// setting height
                         child: Text(
-                            'Calculates BMI, lorem ipsum coming in 3..2...1..sdfjblSYfsKGVfhtesfddsyfdhysdfvsytfdk',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
+                          'Calculates BMI, lorem ipsum coming in 3..2...1..sdfjblSYfsKGVfhtesfddsyfdhysdfvsytfdk',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
                       ),
                       Container(
-                        child: LinearProgressIndicator(
-                          //value: _value1,
-                          semanticsLabel: 'Target',
-                          semanticsValue: '2500/2700',
-                          backgroundColor: Colors.white,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.pinkAccent[200]),
+                        child: Text(
+                          bmrMale.toString(),
                         ),
                       ),
                     ],
@@ -555,10 +553,11 @@ class InsightsPage extends StatelessWidget {
           color: Colors.pinkAccent,
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyProfile(),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyProfile(),
+              ),
+            );
           },
           child: Text(
             'Done',
